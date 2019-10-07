@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+    <title></title>
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div id="result" class="row">
+           
+        </div>
+    </div>
+
+    <script src="Scripts/jquery-3.0.0.min.js"></script>
+    <script src="Scripts/bootstrap.bundle.min.js"></script>
+    <script>
+
+        $.ajax({
+            url: "https://localhost:44342/api/wallet",
+            method: "GET",
+            success: function (result) {
+                console.log(result);
+                for (i = 0; i < result.length; i++) {
+                    tags = " ";
+                    for (j = 0; j < result[i].tags.length; j++) {
+                        tags += "<span class='badge badge-primary mr-1'>" + result[i].tags[j] + "</span>";
+                    }
+
+                    $("#result").append(
+                        "<div class='col-4'>" +
+                            "<div class='card'>" +
+                                "<div class='card-header'>" +
+                                    result[i].description +
+                                "</div>" +
+                                "<div class='card-body'>" +
+                                    "<p>" + result[i].date + "</p>" +
+                                    "<p>" + result[i].value + "uah </p>" +
+                                    "<p>" + result[i].category + "</p>" +
+                                    "<p>" + tags + "</p>" +
+                                "</div>" +
+                            "</div>" +
+                        "</div>"
+                    );
+                }
+            },
+            error: function (err) {
+                console.log("ERROR -- ");
+                console.log(err);
+            }
+        })
+
+    </script>
+</body>
+</html>
