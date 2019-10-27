@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SpendingsWebAPI.Entities;
+using SpendingsWebAPI.Extentions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace SpendingsWebAPI
         public WalletContext(DbContextOptions<WalletContext> options) : base(options)
         {
             //Database.EnsureCreated();
+            User u = new User();
+            u.TestExtention();
         }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using DTOLayer;
 using Microsoft.AspNetCore.Mvc;
@@ -63,6 +64,8 @@ namespace SpendingsWebAPI.Controllers
                 Category = x.Category.Name,
                 Tags = x.Tags.Select(t => t.Tag.Name).ToList()
             }).ToList();
+
+            Thread.Sleep(5000);
 
             return result;
         }

@@ -50,6 +50,7 @@ namespace SpendingsWebAPI
             }
 
             app.UseHttpsRedirection();
+            
             app.UseMvc();
         }
     }
