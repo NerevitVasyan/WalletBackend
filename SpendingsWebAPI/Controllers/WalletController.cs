@@ -27,7 +27,7 @@ namespace SpendingsWebAPI.Controllers
         
         // api/wallet/6
         [HttpGet("{userId}")]
-        public List<SpendingDto> Get(int userId)
+        public List<SpendingDto> Get(string userId)
         {
             var spendings = _spendingRepos.GetAll()
                 .Include(x => x.Category)
@@ -149,8 +149,12 @@ namespace SpendingsWebAPI.Controllers
             }
 
             // added user
-            var user = db.Users.FirstOrDefault(x => x.Id == model.UserId);
-            spending.User = user;
+
+            //var user = db.Users.FirstOrDefault(x => x.Id == model.UserId);
+            //spending.User = user;
+
+            spending.UserId = model.UserId;
+
             //
 
             db.Spendings.Add(spending);

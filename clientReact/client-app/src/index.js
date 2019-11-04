@@ -4,10 +4,11 @@ import './index.css';
 import App from './App';
 import { createStore, applyMiddleware } from 'redux';
 import { reducer } from './reducers/reducer';
-import Provider from 'react-redux';
+import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { actionCreators } from './actions/actions';
 import axios from 'axios';
+import Login from './components/login';
 
 // const test = async () => {
 //     let response = await fetch("https://localhost:44342/api/wallet");
@@ -40,17 +41,17 @@ import axios from 'axios';
 
 //  console.log(obj2);
 
-let store = createStore(reducer, { spendings: [], token: "TOKEN" }, thunk);
+let store = createStore(reducer);
 
-actionCreators.fetchDataSecond(store.dispatch);
+//actionCreators.fetchDataSecond(store.dispatch);
 
 //store.dispatch(actionCreators.fetchData());
 
 console.log(store.getState());
 
-// ReactDOM.render(
-//     <Provider store={store}>
-//         <App />
-//     </Provider>, document.getElementById('root'));
+ReactDOM.render(
+    <Provider store={store}>
+        <Login/>
+    </Provider>, document.getElementById('root'));
 
 

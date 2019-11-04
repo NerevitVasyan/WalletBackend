@@ -1,9 +1,12 @@
-import { FETCH_DATA,ADD_SPENDING } from '../actions/actions';
+import { FETCH_DATA,ADD_SPENDING, LOGIN } from '../actions/actions';
 
 
 let initialState = {
     spendings: [],
-    token: "MY TOKEN"
+    token: "MY TOKEN",
+    decoded: {
+        email: "asdsad"
+    }
 }
 
 // reducer must be pure function
@@ -15,5 +18,13 @@ export function reducer(state,action) {
                 ...state,
                 spendings: action.spendings
             }
+        case LOGIN:{
+            let res = {
+                ...state,
+                decoded: action.decoded
+            };
+            console.log(res);
+            return res;
+        }
     }
 }

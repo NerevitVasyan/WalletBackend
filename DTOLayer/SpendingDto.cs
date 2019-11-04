@@ -10,7 +10,7 @@ namespace DTOLayer
         public DateTime Date { get; set; }
         public decimal Value { get; set; }
         public string Category { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public List<string> Tags { get; set; }
     }
 }

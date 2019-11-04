@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SpendingsWebAPI.Entities;
 using SpendingsWebAPI.Extentions;
 using System;
@@ -8,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace SpendingsWebAPI
 {
-    public class WalletContext : DbContext
+    public class WalletContext : IdentityDbContext<User>
     {
         public WalletContext(DbContextOptions<WalletContext> options) : base(options)
         {
-            //Database.EnsureCreated();
-            User u = new User();
-            u.TestExtention();
+            Database.EnsureCreated();
+            //User u = new User();
+            //u.TestExtention();
         }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -35,11 +36,13 @@ namespace SpendingsWebAPI
                 .HasOne(st => st.Tag)
                 .WithMany(t => t.Spendings)
                 .HasForeignKey(st => st.TagId);
+
+            //ATTENTION
+            base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Spending> Spendings { get; set; }
-        public DbSet<User> Users { get; set; }
     }
 }
