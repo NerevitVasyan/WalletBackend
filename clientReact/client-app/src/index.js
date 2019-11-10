@@ -8,7 +8,14 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { actionCreators } from './actions/actions';
 import axios from 'axios';
-import Login from './components/login';
+import Login from './containers/loginContainer';
+
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+} from "react-router-dom";
 
 // const test = async () => {
 //     let response = await fetch("https://localhost:44342/api/wallet");
@@ -51,7 +58,33 @@ console.log(store.getState());
 
 ReactDOM.render(
     <Provider store={store}>
-        <Login/>
+        <Router>
+            <div>
+                <nav>
+                    <ul>
+                        <li>
+                            <Link to="/">Login</Link>
+                        </li>
+                        <li>
+                            <Link to="/about">About</Link>
+                        </li>
+                        <li>
+                            <Link to="/users">Users</Link>
+                        </li>
+                    </ul>
+                </nav>
+                <Switch>
+                    <Route path="/about">
+                        <h1>ABOUT</h1>
+                    </Route>
+                    <Route path="/users">
+                        <h1>USERS</h1>
+                    </Route>
+                    <Route path="/" component={Login} >
+                    </Route>
+                </Switch>
+            </div>
+        </Router>
     </Provider>, document.getElementById('root'));
 
 

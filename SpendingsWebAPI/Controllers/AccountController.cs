@@ -42,13 +42,19 @@ namespace SpendingsWebAPI.Controllers
 
             if (user != null)
             {
-                await signInManager.SignInAsync(user, model.IsRemember);
-                var token = GenerateJwtToken(user.Id, user.Email);
-                return new SingleResultDto<string>
+                var result = await signInManager.PasswordSignInAsync(user, model.Password, model.IsRemember,false);
+                if (result.Succeeded)
                 {
-                    Successful = true,
-                    Data = token
-                };
+                    //await signInManager.SignInAsync(user, model.IsRemember);
+                    var token = GenerateJwtToken(user.Id, user.Email);
+                    return new SingleResultDto<string>
+                    {
+                        Successful = true,
+                        Data = token
+                    };
+                }
+                throw new Exception("Wrong password");
+                
             }
             throw new Exception("User not found");
         }

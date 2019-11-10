@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using DTOLayer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SpendingsWebAPI.DAL.Abstraction;
@@ -26,12 +28,16 @@ namespace SpendingsWebAPI.Controllers
 
         
         // api/wallet/6
-        [HttpGet("{userId}")]
-        public List<SpendingDto> Get(string userId)
+        [Authorize]
+        [HttpGet]
+        public List<SpendingDto> Get()
         {
             var spendings = _spendingRepos.GetAll()
                 .Include(x => x.Category)
                 .Include(x => x.Tags);
+
+            var claim = HttpContext.User.Claims;
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             var result = spendings
                 .Where(x=>x.UserId == userId)
@@ -48,27 +54,27 @@ namespace SpendingsWebAPI.Controllers
             return result;
         }
 
-        [HttpGet]
-        public List<SpendingDto> Get()
-        {
-            var spendings = _spendingRepos.GetAll()
-                .Include(x => x.Category)
-                .Include(x => x.Tags);
+        //[HttpGet]
+        //public List<SpendingDto> Get()
+        //{
+        //    var spendings = _spendingRepos.GetAll()
+        //        .Include(x => x.Category)
+        //        .Include(x => x.Tags);
 
-            var result = spendings.Select(x => new SpendingDto
-            {
-                Description = x.Description,
-                Value = x.Value,
-                Date = x.Date,
-                Id = x.Id,
-                Category = x.Category.Name,
-                Tags = x.Tags.Select(t => t.Tag.Name).ToList()
-            }).ToList();
+        //    var result = spendings.Select(x => new SpendingDto
+        //    {
+        //        Description = x.Description,
+        //        Value = x.Value,
+        //        Date = x.Date,
+        //        Id = x.Id,
+        //        Category = x.Category.Name,
+        //        Tags = x.Tags.Select(t => t.Tag.Name).ToList()
+        //    }).ToList();
 
-            Thread.Sleep(5000);
+        //    Thread.Sleep(5000);
 
-            return result;
-        }
+        //    return result;
+        //}
 
         [HttpGet("[action]/{tag}")]
         public List<SpendingDto> GetByTag(string tag)//tag = "Coffee"
@@ -117,6 +123,7 @@ namespace SpendingsWebAPI.Controllers
         //    return spending;
         //}
 
+        [Authorize]
         [HttpPost("[action]")]
         public void AddSpending(SpendingDto model)
         {
@@ -153,7 +160,10 @@ namespace SpendingsWebAPI.Controllers
             //var user = db.Users.FirstOrDefault(x => x.Id == model.UserId);
             //spending.User = user;
 
-            spending.UserId = model.UserId;
+            var claims = HttpContext.User.Claims;
+
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            spending.UserId = userId;
 
             //
 

@@ -29,7 +29,7 @@ export const actionCreators = {
                 let decoded = jwt_decode(token);
 
                 dispatch({ type: LOGIN, decoded });
-                
+                console.log("Done");
             }).catch(err => {
                 console.error(err);
             });

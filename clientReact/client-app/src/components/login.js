@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { actionCreators } from '../actions/actions';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 class Login extends Component {
     state = {}
@@ -12,14 +13,16 @@ class Login extends Component {
             isRemember: this.refs.isRemember.checked,
         }
 
-        actionCreators.login(this.props.dispatch,user);
+        //actionCreators.login(this.props.dispatch, user);
+        this.props.login(user);
+        this.props.history.push("/about");
     }
 
     render() {
         console.log(this);
         return (
             <div>
-                <div>{this.props.state!==undefined?this.props.state.decoded.sub:"NONE"}</div>
+                <div>{this.props.state !== undefined ? this.props.state.decoded.sub : "NONE"}</div>
                 <div>
                     <p>Email:</p>
                     <input ref="email" type="text" />
@@ -38,6 +41,16 @@ class Login extends Component {
     }
 }
 
-const mapStateToProps = state => ({ state: state })
+export default Login;
 
-export default connect(mapStateToProps)(Login);
+
+
+// const mapStateToProps = (state) => ({ state })
+
+// const mapDispatchToProps = dispatch => ({
+//     login: (user) => { 
+//         actionCreators.login(dispatch, user);
+//     }
+// });
+
+// export default connect(mapStateToProps,mapDispatchToProps)(Login);
